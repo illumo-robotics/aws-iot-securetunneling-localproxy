@@ -1,3 +1,28 @@
+## Additionnal Documentation on fork Illumo
+
+### Build
+In the project root dir : 
+
+`docker build  -t aws-iot-securetunneling-localproxy-illumo . -f ./.github/docker-images/Dockerfile --build-arg OS=ubuntu:latest --build-arg  BASE_IMAGE=public.ecr.aws/aws-iot-securetunneling-localproxy/ubuntu-base:amd64-latest`
+
+
+### Create a secure tunnel to the device using IoT console
+In IoT console, create a tunnel with service SSH and target device on panel Manage/Tunnels
+Store Acces tokens, copy the source token
+
+### Launch LocalProxy on your host 
+
+- `docker run --name localproxy --expose=5555 -p 5555:5555 --rm -it aws-iot-securetunneling-localproxy-illumo bash`
+- `./localproxy -s 5555 -c /root/certs -v 5 -r eu-central-1 -b 0.0.0.0 -t <source-token>`
+- 
+
+### Open SSH connection (for user illumo)
+```bash
+ssh illumo@localhost -p 5555
+```
+
+# Original Doc from now on :
+
 ## AWS IoT Secure Tunneling Local Proxy Reference Implementation C++
 
 Example C++ implementation of a local proxy for the AWS IoT Secure Tunneling service
