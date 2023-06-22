@@ -34,4 +34,4 @@ RUN HOME_DIR=/root \
 
 WORKDIR /root/bin
 
-# ENTRYPOINT ["/root/bin"]
+# ENTRYPOINT ["/root/bin/localproxy"]

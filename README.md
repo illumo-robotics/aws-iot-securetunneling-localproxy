@@ -1,22 +1,37 @@
-## Additionnal Documentation on fork Illumo
+# Additionnal Documentation on fork Illumo
 
-### Build
+## Create and push docker image
 In the project root dir : 
 
 `docker build  -t aws-iot-securetunneling-localproxy-illumo . -f ./.github/docker-images/Dockerfile --build-arg OS=ubuntu:latest --build-arg  BASE_IMAGE=public.ecr.aws/aws-iot-securetunneling-localproxy/ubuntu-base:amd64-latest`
 
 
-### Create a secure tunnel to the device using IoT console
+### Create repository if not exist (already done normally) : 
+
+Doc here : https://docs.aws.amazon.com/AmazonECR/latest/userguide/getting-started-cli.html#cli-create-repository 
+
+- `aws ecr create-repository --repository-name illumo-securetunneling-localproxy-repository --image-scanning-configuration scanOnPush=false --region eu-central-1`
+  
+
+### Tag and Push docker image : 
+
+- `docker tag aws-iot-securetunneling-localproxy-illumo:latest 335838505983.dkr.ecr.eu-central-1.amazonaws.com illumo-securetunneling-localproxy-repository`
+- `docker push 335838505983.dkr.ecr.eu-central-1.amazonaws.com/illumo-securetunneling-localproxy-repository`
+
+## Create a secure tunnel to the device using IoT console
+
+<span style="color:red">!!! Mono repo *illumo* contains scripts to create and delete ssh tunnel. It replaces the following instructions.</span>
+
 In IoT console, create a tunnel with service SSH and target device on panel Manage/Tunnels
 Store Acces tokens, copy the source token
 
-### Launch LocalProxy on your host 
+## Launch LocalProxy on your host 
 
 - `docker run --name localproxy --expose=5555 -p 5555:5555 --rm -it aws-iot-securetunneling-localproxy-illumo bash`
 - `./localproxy -s 5555 -c /root/certs -v 5 -r eu-central-1 -b 0.0.0.0 -t <source-token>`
 - 
 
-### Open SSH connection (for user illumo)
+## Open SSH connection (for user illumo)
 ```bash
 ssh illumo@localhost -p 5555
 ```
